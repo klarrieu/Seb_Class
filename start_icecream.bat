@@ -1,0 +1,1 @@
+start "Icecream" "C:\Python27\ArcGISx6410.5\python.exe" "%cd%\icecream.py"
