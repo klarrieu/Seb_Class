@@ -1,7 +1,5 @@
 import random as rd
 import logging
-import fFree as ff
-ff.logging_begin('icelog.log')
 
 class Ice:
     '''Can set temperament to polite or rude'''
@@ -10,18 +8,29 @@ class Ice:
         
         self.logger = logging.getLogger('icelog.log')
         self.flavors = ['vanilla', 'chocolate', 'dirt']
-        self.scoops = [1, 2, 3, 20, 40, 100]
+        self.desc = {1: 'small', 2: 'medium', 3: 'large', 4: 'extra large', 20: 'family size'}
         self.temperament = temperament
 
-    def get_scoops_price(self):
-        num_scoops = rd.choice(self.scoops)
-        price = (num_scoops**0.5)*1.5
+    def get_menu(self):
+        # reads ice menu from ice.xlsx
+        data_file = cio.Read(  os.path.dirname(__file__) + '\\ice.xlsx', 0, "icelog.log")
+        self.flavors = data_file.read_column("B", 3)
+        self.logger.info("Menu: \n" + "\n".join(self.flavors))
 
-        return num_scoops, price
+        ###
 
-    def dialogue(self, *args, **kwargs):
+        data_file.close_wb()
 
-        num_scoops, price = self.get_scoops_price()
+    def get_size_price(self, scoops):
+
+        size = self.desc[scoops]
+        price = (scoops**0.75)*1.5
+        return size, price
+
+    def dialogue(self, scoops):
+
+        num_scoops = scoops
+        size, price = self.get_size_price(scoops)
         current_flavor = rd.choice(self.flavors)
 
         self.logger.info('Shopkeeper: Hello, welcome to my ice cream shop. What can I get for you?')
@@ -30,7 +39,7 @@ class Ice:
         else:
             self.logger.info('Patron: I\'d like %i scoops of %s please!' % (num_scoops, current_flavor))
 
-        if num_scoops > 3:
+        if num_scoops > 4:
             self.logger.info('Shopkeeper: I\'m sorry, but that\'s way too much!')
             if self.temperament == 'polite':
                 new_scoops = rd.choice([1, 2, 3])
@@ -52,7 +61,9 @@ class Ice:
                 else:
                     self.logger.info('Patron: Here you are, thank you!')
 
-        self.logger.info('\nFin.\n\n*fade to black*')
+        self.logger.info('\nFin.\n\n*fade to black*\n')
+
+        return size, '%.2f' % price
 
     def __call__(self, *args, **kwargs):
         self.dialogue()
