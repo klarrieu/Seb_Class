@@ -1,5 +1,6 @@
 # Seb's Python + GIS Course Assignment 1
 
+## How to Run
 1. Clone this repository.
 2. Add the `openpyxl` folder to repo directory.
 3. Confirm the `python.exe` path in the batch file is correct; change if needed.
