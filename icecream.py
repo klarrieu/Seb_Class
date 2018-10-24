@@ -6,7 +6,7 @@ import os
 
 def main():
     logger = ff.logging_begin("icelog.log")
-    client_orders = {"Jerry": 2, "Terry": 4, "Larry": 20, 'Barry': 1, 'Sherry': 3}  # add scoop numbers or modify client names
+    client_orders = {"Jerry": 2, "Terry": 4, "Larry": 20, 'Barry': 1, 'Sherry': 3}
     ice = cic.Ice('rude')
     data_file = cio.WbMod(os.path.dirname(__file__) + "\\ice.xlsx", 0)
 
